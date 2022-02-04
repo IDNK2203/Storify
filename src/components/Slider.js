@@ -70,7 +70,7 @@ const Desc = styled.p`
 const Button = styled.button`
   background-color: transparent;
   cursor: pointer;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem;
   font-size: 1rem;
   text-transform: uppercase;
 `;
