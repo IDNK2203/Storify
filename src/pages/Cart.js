@@ -47,6 +47,7 @@ const CartProductList = styled.ul`
 `;
 const CartProduct = styled.li`
   display: flex;
+  padding: 1rem 0;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #80808047;
