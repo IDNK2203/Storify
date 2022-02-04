@@ -3,12 +3,14 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { sliderItems } from "../data";
 import { useState } from "react";
+import { mobile } from "../responsive";
 const Container = styled.section`
   position: relative;
   width: 100%;
   height: 100vh;
   position: relative;
   overflow: hidden;
+  ${mobile({ display: "none" })}
 `;
 
 const ArrowContainer = styled.span`

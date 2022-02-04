@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   width: 100vw;
@@ -19,6 +20,7 @@ const Wrapper = styled.div`
   width: 25%;
   padding: 20px;
   background-color: white;
+  ${mobile({ width: "75%" })}
 `;
 
 const Title = styled.h1`
@@ -55,7 +57,7 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
-const Signin = () => {
+const Login = () => {
   return (
     <Container>
       <Wrapper>
@@ -63,7 +65,7 @@ const Signin = () => {
         <Form>
           <Input placeholder="username" />
           <Input placeholder="password" />
-          <Button>Sign In</Button>
+          <Button>LOGIN</Button>
           <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
           <Link>CREATE A NEW ACCOUNT</Link>
         </Form>
@@ -72,4 +74,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Login;

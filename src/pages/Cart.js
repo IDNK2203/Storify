@@ -3,6 +3,7 @@ import Announcement from "../components/Announcement";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Add, Remove } from "@mui/icons-material";
+import { mobile } from "../responsive";
 
 const Wrapper = styled.div``;
 const CartSection = styled.section``;
@@ -20,7 +21,9 @@ const CartNav = styled.div`
   align-items: center;
   padding: 1rem;
 `;
-const InfoTextBox = styled.div``;
+const InfoTextBox = styled.div`
+  ${mobile({ display: "none" })}
+`;
 const InfoText = styled.span`
   text-decoration: underline;
   cursor: pointer;
@@ -34,13 +37,15 @@ const Button = styled.button`
   background-color: ${(props) =>
     props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => (props.type === "filled" ? "white" : "black")};
-  border: ${(props) => props.type === "filled" && "none"};
+  ${mobile({ padding: "0.5rem", fontSize: "0.75rem" })}
 `;
+/* border: ${(props) => props.type === "filled" && "none"}; */
 
 const CartProducts = styled.div`
   display: flex;
   padding: 1rem;
   margin-right: 2rem;
+  ${mobile({ flexDirection: "column", marginRight: "0" })}
 `;
 const CartProductList = styled.ul`
   flex: 2;
@@ -51,6 +56,7 @@ const CartProduct = styled.li`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #80808047;
+  ${mobile({ flexDirection: "column" })}
 `;
 
 const Left = styled.div`
@@ -119,7 +125,6 @@ const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
   padding: 20px;
-  height: 50vh;
   width: 100%;
   max-width: 22.5rem;
 `;

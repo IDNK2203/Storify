@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SendSharpIcon from "@mui/icons-material/SendSharp";
+import { mobile } from "../responsive";
 
 const Section = styled.section`
   display: flex;
@@ -19,6 +20,7 @@ const Desc = styled.p`
   font-size: 1.5rem;
   font-weight: 300;
   margin: 1rem 0;
+  ${mobile({ textAlign: "center" })}
 `;
 const InputContainer = styled.div`
   width: min(90%, 20rem);
@@ -32,6 +34,7 @@ const Input = styled.input`
   border: none;
   flex: 4;
   padding-left: 20px;
+  ${mobile({ width: "80%" })}
 `;
 const Button = styled.button`
   flex: 1;

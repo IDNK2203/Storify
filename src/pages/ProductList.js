@@ -4,36 +4,52 @@ import Header from "../components/Header";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import Products from "../components/Products";
+import { mobile } from "../responsive";
 
 const Wrapper = styled.div``;
+
+const StyledProducts = styled(Products)`
+  padding: "0px 0px";
+`;
 
 const ProductListSection = styled.section`
   padding: 1rem;
 `;
 const HeaderContainer = styled.div`
-  padding-bottom: 1rem;
+  ${mobile({
+    paddingBottom: "1rem",
+  })}
 `;
 const ProductHeader = styled.h2`
   font-size: 3rem;
   font-weight: bold;
+  ${mobile({
+    fontSize: "2rem",
+  })}
 `;
 
 const QueryCrtlsBox = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
 `;
+/* ${mobile({ flexDirection: "column" })} */
 const QueryCrtl = styled.div`
   display: flex;
   align-items: center;
+  ${mobile({ flexDirection: "column" })}
 `;
 const QueryCrtlTitle = styled.h3`
   font-weight: bold;
   margin-right: 1rem;
+  ${mobile({
+    margin: " 0 1rem 0 0",
+  })}
 `;
 
 const QueryDropdown = styled.select`
   padding: 0.5rem;
+  margin: 0.5rem;
 `;
 const QueryDropdownOpts = styled.option``;
 
@@ -59,7 +75,7 @@ function ProductList() {
               <QueryDropdownOpts> RebeccaPurple</QueryDropdownOpts>
               <QueryDropdownOpts> Teal</QueryDropdownOpts>
             </QueryDropdown>
-            <QueryDropdown style={{ margin: "0 1rem" }}>
+            <QueryDropdown>
               <QueryDropdownOpts selected disabled>
                 Size{" "}
               </QueryDropdownOpts>
@@ -81,7 +97,7 @@ function ProductList() {
           </QueryCrtl>
         </QueryCrtlsBox>
 
-        <Products></Products>
+        <StyledProducts></StyledProducts>
       </ProductListSection>
 
       <Newsletter></Newsletter>

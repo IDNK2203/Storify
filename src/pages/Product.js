@@ -4,10 +4,12 @@ import Header from "../components/Header";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { Add, Remove } from "@mui/icons-material";
+import { mobile } from "../responsive";
 const Wrapper = styled.div``;
 const ProductSection = styled.section`
   display: flex;
   padding: 3rem;
+  ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 const ImageContainer = styled.div`
   flex: 1;
@@ -16,10 +18,12 @@ const Image = styled.img`
   width: 100%;
   height: max(70vh, 600px);
   object-fit: cover;
+  ${mobile({ height: "max(40vh, 350px)" })}
 `;
 const InfoContainer = styled.div`
   flex: 1;
   padding: 2rem;
+  ${mobile({ padding: "10px" })}
 `;
 const Title = styled.h2`
   font-size: 2.5rem;
@@ -32,6 +36,7 @@ const Desc = styled.p`
 const Price = styled.p`
   font-size: 3rem;
   font-weight: 200;
+  ${mobile({ fontSize: "2rem" })}
 `;
 
 const FilterContainer = styled.ul`
@@ -50,7 +55,12 @@ const FilterColor = styled.div`
   height: 1.5rem;
   border-radius: 50%;
   cursor: pointer;
+
   background-color: ${(props) => props.color};
+  ${mobile({
+    width: "1rem",
+    height: "1rem",
+  })}
 `;
 const FilterTitle = styled.h4`
   font-size: 1.25rem;
@@ -78,6 +88,10 @@ const Quantity = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0px 5px;
+  ${mobile({
+    width: "50px",
+    height: "35px",
+  })}
 `;
 const Button = styled.button`
   flex: 1;
@@ -91,6 +105,9 @@ const Button = styled.button`
   &:hover {
     background-color: #f8f4f4;
   }
+  ${mobile({
+    padding: "10px 0",
+  })}
 `;
 
 function Product() {
