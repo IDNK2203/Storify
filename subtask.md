@@ -1,11 +1,8 @@
-# Task : Project Setup
+# Tasks
 
-## Subtasks
+## App
 
-1. setup task tracking with Notion[-]
-2. create project directory [-]
-3. install packages[-]
-4. setup base template[-]
-5. make initial commit[-]
-6. push code to remote repo[-]
-7. deploy to netlify[-]
+---
+
+- Setup App Linking and Router System
+- condition rendering of login and register page depending on whether user object is available
