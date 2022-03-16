@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { Link } from "react-router-dom";
 const Info = styled.div`
   opacity: 0;
   width: 100%;
@@ -20,7 +21,7 @@ const Info = styled.div`
 const Container = styled.div`
   flex: 1;
   margin: 5px;
-  min-width: 250px;
+  min-width: 300px;
   height: 350px;
   position: relative;
   display: flex;
@@ -71,9 +72,11 @@ function ProductsItem({ item }) {
         <Icon>
           <FavoriteBorderOutlinedIcon></FavoriteBorderOutlinedIcon>
         </Icon>
-        <Icon>
-          <SearchOutlinedIcon></SearchOutlinedIcon>
-        </Icon>
+        <Link to={`/product/${item._id}`}>
+          <Icon>
+            <SearchOutlinedIcon></SearchOutlinedIcon>
+          </Icon>
+        </Link>
       </Info>
     </Container>
   );

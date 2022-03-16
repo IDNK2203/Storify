@@ -5,6 +5,8 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import Products from "../components/Products";
 import { mobile } from "../responsive";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 const Wrapper = styled.div``;
 
@@ -54,29 +56,42 @@ const QueryDropdown = styled.select`
 const QueryDropdownOpts = styled.option``;
 
 function ProductList() {
+  const { category } = useParams();
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState("lastest");
+
+  const handleFilter = function (e) {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
+  };
+  console.log(filters, sort);
+
   return (
     <Wrapper>
       <Header></Header>
       <Announcement></Announcement>
       <ProductListSection>
         <HeaderContainer>
-          <ProductHeader> Dresses</ProductHeader>
+          <ProductHeader> {category}</ProductHeader>
         </HeaderContainer>
         <QueryCrtlsBox>
           <QueryCrtl>
             <QueryCrtlTitle>Filter Product:</QueryCrtlTitle>
-            <QueryDropdown>
-              <QueryDropdownOpts selected disabled>
+            <QueryDropdown name="color" onChange={handleFilter}>
+              <QueryDropdownOpts defaultValue disabled>
                 Color{" "}
               </QueryDropdownOpts>
               <QueryDropdownOpts>Blue</QueryDropdownOpts>
               <QueryDropdownOpts> Grey</QueryDropdownOpts>
               <QueryDropdownOpts>Green</QueryDropdownOpts>
-              <QueryDropdownOpts> RebeccaPurple</QueryDropdownOpts>
-              <QueryDropdownOpts> Teal</QueryDropdownOpts>
+              <QueryDropdownOpts> Black</QueryDropdownOpts>
+              <QueryDropdownOpts> Yellow</QueryDropdownOpts>
+              <QueryDropdownOpts> Red</QueryDropdownOpts>
             </QueryDropdown>
-            <QueryDropdown>
-              <QueryDropdownOpts selected disabled>
+            <QueryDropdown name="size" onChange={handleFilter}>
+              <QueryDropdownOpts defaultValue disabled>
                 Size{" "}
               </QueryDropdownOpts>
               <QueryDropdownOpts>S</QueryDropdownOpts>
@@ -88,16 +103,26 @@ function ProductList() {
 
           <QueryCrtl>
             <QueryCrtlTitle>Sort Product:</QueryCrtlTitle>
-            <QueryDropdown>
-              <QueryDropdownOpts selected>Newest </QueryDropdownOpts>
+            <QueryDropdown
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              <QueryDropdownOpts value={"latest"}>Newest </QueryDropdownOpts>
 
-              <QueryDropdownOpts>Price (asc)</QueryDropdownOpts>
-              <QueryDropdownOpts> Price (desc)</QueryDropdownOpts>
+              <QueryDropdownOpts value={"asc"}>Price (asc)</QueryDropdownOpts>
+              <QueryDropdownOpts value={"desc"}>
+                {" "}
+                Price (desc)
+              </QueryDropdownOpts>
             </QueryDropdown>
           </QueryCrtl>
         </QueryCrtlsBox>
 
-        <StyledProducts></StyledProducts>
+        <StyledProducts
+          cat={category}
+          filters={filters}
+          sort={sort}
+        ></StyledProducts>
       </ProductListSection>
 
       <Newsletter></Newsletter>
