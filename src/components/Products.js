@@ -1,9 +1,8 @@
 import styled from "styled-components";
-// import { popularProducts } from "../data";
 import ProductsItem from "../components/ProductsItem";
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
+import { publicRequest } from "../requestMethods";
 
 const Section = styled.section`
   display: flex;
@@ -22,10 +21,8 @@ function Products({ cat, filters, sort }) {
     // when cat state changes or upon first render of component
     const getProduct = async () => {
       try {
-        const incomingProducts = await axios.get(
-          cat
-            ? "http://localhost:4000/api/v1/product?category=" + cat
-            : "http://localhost:4000/api/v1/product"
+        const incomingProducts = await publicRequest.get(
+          cat ? "/product?category=" + cat : "/product"
         );
         setproducts(incomingProducts.data);
       } catch (error) {

@@ -5,6 +5,9 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../responsive";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { publicRequest } from "../requestMethods";
 const Wrapper = styled.div``;
 const ProductSection = styled.section`
   display: flex;
@@ -38,7 +41,6 @@ const Price = styled.p`
   font-weight: 200;
   ${mobile({ fontSize: "2rem" })}
 `;
-
 const FilterContainer = styled.ul`
   display: flex;
   margin: 1rem 0;
@@ -111,53 +113,95 @@ const Button = styled.button`
 `;
 
 function Product() {
+  const { id } = useParams();
+  const [product, setproduct] = useState({});
+  const [color, setcolor] = useState("");
+  const [size, setsize] = useState("");
+  const [quantity, setquantity] = useState(0);
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await publicRequest.get("/product/" + id);
+        setproduct(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getUser();
+  }, [id]);
+
+  const handleQuantity = (op) => {
+    if (op === "decrease") {
+      quantity > 0 && setquantity(quantity - 1);
+    } else {
+      setquantity(quantity + 1);
+    }
+  };
+
   return (
     <Wrapper>
       <Announcement></Announcement>
       <Header></Header>
-      <ProductSection>
-        <ImageContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg"></Image>
-        </ImageContainer>
-        <InfoContainer>
-          <Title> Denim jacket</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima
-            dolorum mollitia labore perferendis debitis eaque recusandae, ullam
-            eius atque rerum.
-          </Desc>
-          <Price>$25</Price>
-          <FilterContainer>
-            <FilterItem>
-              <FilterTitle>Colors:</FilterTitle>
-              <FilterColorBox>
-                <FilterColor color="black" />
-
-                <FilterColor color="teal" />
-
-                <FilterColor color="blue" />
-              </FilterColorBox>
-            </FilterItem>
-            <FilterItem>
-              <FilterTitle>Sizes:</FilterTitle>
-              <FilterSize>
-                <FilterSizeOpt>S</FilterSizeOpt>
-                <FilterSizeOpt>M</FilterSizeOpt>
-                <FilterSizeOpt>L</FilterSizeOpt>
-                <FilterSizeOpt>XL</FilterSizeOpt>
-              </FilterSize>
-            </FilterItem>
-          </FilterContainer>
-          <QuantityContainer>
-            <QuantityBox>
-              <Remove style={{ cursor: "pointer" }}></Remove>
-              <Quantity>{1}</Quantity>
-              <Add style={{ cursor: "pointer" }}></Add>
-            </QuantityBox>
-            <Button> Add To Cart</Button>
-          </QuantityContainer>
-        </InfoContainer>
-      </ProductSection>
+      {product.title && (
+        <ProductSection>
+          <ImageContainer>
+            <Image src={product.img}></Image>
+          </ImageContainer>
+          <InfoContainer>
+            <Title> {product.title}</Title>
+            <Desc>{product.description}</Desc>
+            <Price> ${product.price}</Price>
+            <FilterContainer>
+              <FilterItem>
+                <FilterTitle>Colors:</FilterTitle>
+                <FilterColorBox>
+                  {product.color.map((item) => (
+                    <FilterColor
+                      key={item}
+                      color={item}
+                      onClick={() => {
+                        setcolor(item);
+                      }}
+                    />
+                  ))}
+                </FilterColorBox>
+              </FilterItem>
+              <FilterItem>
+                <FilterTitle>Sizes:</FilterTitle>
+                <FilterSize
+                  onChange={(e) => {
+                    setsize(e.target.value);
+                  }}
+                >
+                  {product.size.map((item) => (
+                    <FilterSizeOpt key={item}> {item}</FilterSizeOpt>
+                  ))}
+                </FilterSize>
+              </FilterItem>
+            </FilterContainer>
+            <QuantityContainer>
+              <QuantityBox>
+                <Remove
+                  onClick={() => {
+                    handleQuantity("decrease");
+                  }}
+                  style={{ cursor: "pointer" }}
+                ></Remove>
+                <Quantity>{quantity}</Quantity>
+                <Add
+                  onClick={() => {
+                    handleQuantity("increase");
+                  }}
+                  style={{ cursor: "pointer" }}
+                ></Add>
+              </QuantityBox>
+              <Button> Add To Cart</Button>
+            </QuantityContainer>
+          </InfoContainer>
+        </ProductSection>
+      )}
       <Newsletter></Newsletter>
 
       <Footer></Footer>
