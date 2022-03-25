@@ -4,6 +4,10 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../responsive";
+import { useSelector } from "react-redux";
+import { publicRequest } from "../requestMethods";
+import { useHistory } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Wrapper = styled.div``;
 const CartSection = styled.section``;
@@ -147,6 +151,27 @@ const SummaryItemText = styled.span``;
 const SummaryItemPrice = styled.span``;
 
 function Cart() {
+  // const history = useHistory();
+  const cartProducts = useSelector((state) => state.cart);
+  // console.log(cartProducts);
+
+  const handleCheckout = async () => {
+    try {
+      const res = await publicRequest.post("checkout/payment", {
+        cart: cartProducts.productList,
+      });
+      const stripe = await loadStripe(
+        "pk_test_51Ju4xZEchdpnNbF1b7l0geFpRHhI3fvKd26fg8JFmLIsTR3GNl1uj3OMGcMvpMk4HuwcJRw87x9id6cit4HZKTZW00cDDLLKwU"
+      );
+      console.log(res);
+      const result = await stripe.redirectToCheckout({
+        sessionId: res.data.session.id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Wrapper>
       <Header></Header>
@@ -158,88 +183,60 @@ function Cart() {
         <CartNav>
           <Button>Continue Shopping</Button>
           <InfoTextBox>
-            <InfoText> Shopping Bag(2)</InfoText>
+            <InfoText>
+              {" "}
+              Shopping Bag{`(${cartProducts.totalQuantity})`}
+            </InfoText>
             <InfoText> Your Wishlist(0)</InfoText>
           </InfoTextBox>
           <Button type="filled">Checkout Now</Button>
         </CartNav>
         <CartProducts>
           <CartProductList>
-            <CartProduct>
-              <Left>
-                <ProductImgBox>
-                  <ProductImg src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1614188818-TD1MTHU_SHOE_ANGLE_GLOBAL_MENS_TREE_DASHERS_THUNDER_b01b1013-cd8d-48e7-bed9-52db26515dc4.png?crop=1xw:1.00xh;center,top&resize=480%3A%2A"></ProductImg>
-                </ProductImgBox>
-                <ProductDets>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>Product: </Boldtext> Chelsea Boots
-                  </ProductDet>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>Product ID: </Boldtext> 93813718293
-                  </ProductDet>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>color: </Boldtext>{" "}
-                    <ProductDetColor color="teal"> </ProductDetColor>{" "}
-                  </ProductDet>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>SIze: </Boldtext> 37.5
-                  </ProductDet>
-                </ProductDets>
-              </Left>
-              <Right>
-                <QuantityBox>
-                  <Remove style={{ cursor: "pointer" }}></Remove>
-                  <Quantity>{1}</Quantity>
-                  <Add style={{ cursor: "pointer" }}></Add>
-                </QuantityBox>
-                <Price>$25</Price>
-              </Right>
-            </CartProduct>
-            <CartProduct>
-              <Left>
-                <ProductImgBox>
-                  <ProductImg src="https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png"></ProductImg>
-                </ProductImgBox>
-                <ProductDets>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>Product: </Boldtext>HAKURA T-SHIRT
-                  </ProductDet>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>Product ID: </Boldtext> 93813718293
-                  </ProductDet>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>color: </Boldtext>{" "}
-                    <ProductDetColor color="grey"> </ProductDetColor>{" "}
-                  </ProductDet>
-                  <ProductDet>
-                    {" "}
-                    <Boldtext>SIze: </Boldtext>M
-                  </ProductDet>
-                </ProductDets>
-              </Left>
-              <Right>
-                <QuantityBox>
-                  <Remove style={{ cursor: "pointer" }}></Remove>
-                  <Quantity>{1}</Quantity>
-                  <Add style={{ cursor: "pointer" }}></Add>
-                </QuantityBox>
-                <Price>$20</Price>
-              </Right>
-            </CartProduct>
+            {cartProducts.productList.map((item, index) => (
+              <CartProduct key={index}>
+                <Left>
+                  <ProductImgBox>
+                    <ProductImg src={item.img}></ProductImg>
+                  </ProductImgBox>
+                  <ProductDets>
+                    <ProductDet>
+                      {" "}
+                      <Boldtext>Product: </Boldtext>
+                      {item.title}
+                    </ProductDet>
+                    <ProductDet>
+                      {" "}
+                      <Boldtext>Product ID: </Boldtext> {item._id}
+                    </ProductDet>
+                    <ProductDet>
+                      {" "}
+                      <Boldtext>color: </Boldtext>{" "}
+                      <ProductDetColor color={item.color}> </ProductDetColor>{" "}
+                    </ProductDet>
+                    <ProductDet>
+                      {" "}
+                      <Boldtext>SIze: </Boldtext> {item.size}
+                    </ProductDet>
+                  </ProductDets>
+                </Left>
+                <Right>
+                  <QuantityBox>
+                    <Remove style={{ cursor: "pointer" }}></Remove>
+                    <Quantity>{item.quantity}</Quantity>
+                    <Add style={{ cursor: "pointer" }}></Add>
+                  </QuantityBox>
+                  <Price>{item.price * item.quantity}</Price>
+                </Right>
+              </CartProduct>
+            ))}
           </CartProductList>
           <CartSummary>
             <Summary>
               <SummaryTitle>ORDER SUMMARY</SummaryTitle>
               <SummaryItem>
                 <SummaryItemText>Subtotal</SummaryItemText>
-                <SummaryItemPrice>$ 80</SummaryItemPrice>
+                <SummaryItemPrice>${cartProducts.totalCost}</SummaryItemPrice>
               </SummaryItem>
               <SummaryItem>
                 <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -251,9 +248,13 @@ function Cart() {
               </SummaryItem>
               <SummaryItem type="total">
                 <SummaryItemText>Total</SummaryItemText>
-                <SummaryItemPrice>$ 80</SummaryItemPrice>
+                <SummaryItemPrice>${cartProducts.totalCost}</SummaryItemPrice>
               </SummaryItem>
-              <Button type="filled" style={{ width: "100%" }}>
+              <Button
+                onClick={handleCheckout}
+                type="filled"
+                style={{ width: "100%" }}
+              >
                 Checkout Now
               </Button>
             </Summary>

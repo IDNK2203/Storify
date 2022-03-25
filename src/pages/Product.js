@@ -8,6 +8,9 @@ import { mobile } from "../responsive";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../redux/cartSlice";
+
 const Wrapper = styled.div``;
 const ProductSection = styled.section`
   display: flex;
@@ -118,6 +121,7 @@ function Product() {
   const [color, setcolor] = useState("");
   const [size, setsize] = useState("");
   const [quantity, setquantity] = useState(0);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getUser() {
@@ -138,6 +142,10 @@ function Product() {
     } else {
       setquantity(quantity + 1);
     }
+  };
+
+  const handleCart = () => {
+    dispatch(addProduct({ ...product, color, size, quantity }));
   };
 
   return (
@@ -197,7 +205,7 @@ function Product() {
                   style={{ cursor: "pointer" }}
                 ></Add>
               </QuantityBox>
-              <Button> Add To Cart</Button>
+              <Button onClick={handleCart}> Add To Cart</Button>
             </QuantityContainer>
           </InfoContainer>
         </ProductSection>

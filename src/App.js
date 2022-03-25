@@ -10,6 +10,8 @@ import {
 import Cart from "./pages/Cart";
 import Signin from "./pages/Signin";
 import Register from "./pages/Signup";
+import "./App.css";
+import Success from "./pages/Success";
 
 function App() {
   const user = false;
@@ -35,6 +37,9 @@ function App() {
           </Route>
           <Route path={"/register"}>
             {user ? <Redirect to={"/"} /> : <Register />}
+          </Route>
+          <Route path="/success">
+            <Success />
           </Route>
         </Switch>
       </Router>

@@ -3,6 +3,9 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import { mobile } from "../responsive";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 const Container = styled.div`
   display: flex;
   padding: 10px 20px;
@@ -68,6 +71,8 @@ const MenuLink = styled.div`
 `;
 
 function Header() {
+  const cart = useSelector((state) => state.cart);
+  console.log(cart);
   return (
     <header>
       <Container>
@@ -81,15 +86,19 @@ function Header() {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>Storify.</Logo>
+          <Link to="/">
+            <Logo>Storify.</Logo>
+          </Link>
         </Center>
         <Right>
           <MenuLink>Signin</MenuLink>
           <MenuLink>Signup</MenuLink>
           <MenuLink>
-            <Badge badgeContent={4} color="primary">
-              <ShoppingCartOutlinedIcon />
-            </Badge>
+            <Link to="/cart">
+              <Badge badgeContent={`${cart.totalQuantity}`} color="primary">
+                <ShoppingCartOutlinedIcon />
+              </Badge>
+            </Link>
           </MenuLink>
         </Right>
       </Container>
